@@ -1,0 +1,55 @@
+<head>
+    <script src="processing.min.js"></script>
+    <script src="jquery-2.1.1.min.js"></script>
+    <script type="application/processing" data-processing-target="loading">
+            int num_ball = 30;
+            int timeStep = 0;
+            int ball_height = 40;
+            int x_modifier = 30;
+            int y_modifier = 80;
+            void setup() {
+                background(#02020C);
+                size(window.innerWidth, window.innerHeight);
+                smooth();
+                frameRate(30);
+                strokeWeight(12);
+            }
+
+            void animateBalls() {
+                for(int i = 0; i < num_ball; ++i){
+                    ellipse(ball_height + x_modifier*i, getY(i, timeStep), ball_height, ball_height)
+                }
+                timeStep++
+            }
+
+            void getY(index, time) {
+                return (window.innerHeight /2) + y_modifier * (1 + Math.sin((time * (index/500 + 0.02)) % 2*Math.PI));
+            }
+
+            void draw() {  // this is run repeatedly.
+                background(#02020C);
+                fill(#0E5482);
+                stroke(#0E5482);
+
+                animateBalls();
+            }
+
+            $('#numBall').on('input', function(){
+                num_ball = $('#numBall').val();
+            });
+            $('#xMod').on('input', function(){
+                x_modifier = $('#xMod').val();
+            });
+            $('#yMod').on('input', function(){
+                y_modifier = $('#yMod').val();
+            });
+    </script>
+</head>
+<body>
+    <p>A processing implementation of the prismata loading screen, modified from
+        https://www.reddit.com/r/gifs/comments/2on8si/connecting_to_server_so_mesmerizing/cmow0sz</p>
+    <p>Number of balls <input type="text" value="30" id="numBall"></p>
+    <p>X Modifier <input type="text" value="30" id="xMod"></p>
+    <p>Y Modifier <input type="text" value="80" id="yMod"></p>
+    <canvas id="loading"></canvas>
+</body>
