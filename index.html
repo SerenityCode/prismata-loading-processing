@@ -1,49 +1,55 @@
-<!DOCTYPE html>
-<html>
+<head>
+    <script src="javascripts/processing.min.js"></script>
+    <script src="javascripts/jquery-2.1.1.min.js"></script>
+    <script type="application/processing" data-processing-target="loading">
+            int num_ball = 30;
+            int timeStep = 0;
+            int ball_height = 40;
+            int x_modifier = 30;
+            int y_modifier = 80;
+            void setup() {
+                background(#02020C);
+                size(window.innerWidth, window.innerHeight);
+                smooth();
+                frameRate(30);
+                strokeWeight(12);
+            }
 
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Prismata Processing : ">
+            void animateBalls() {
+                for(int i = 0; i < num_ball; ++i){
+                    ellipse(ball_height + x_modifier*i, getY(i, timeStep), ball_height, ball_height)
+                }
+                timeStep++
+            }
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+            void getY(index, time) {
+                return (window.innerHeight /2) + y_modifier * (1 + Math.sin((time * (index/500 + 0.02)) % 2*Math.PI));
+            }
 
-    <title>Prismata Processing</title>
-  </head>
+            void draw() {  // this is run repeatedly.
+                background(#02020C);
+                fill(#0E5482);
+                stroke(#0E5482);
 
-  <body>
+                animateBalls();
+            }
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/SerenityCode/prismata-loading-processing">View on GitHub</a>
-
-          <h1 id="project_title">Prismata Processing</h1>
-          <h2 id="project_tagline"></h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/SerenityCode/prismata-loading-processing/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/SerenityCode/prismata-loading-processing/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <p>A processing.js implementation of the Prismata loading screen taken from <a href="https://www.reddit.com/r/gifs/comments/2on8si/connecting_to_server_so_mesmerizing/cmow0sz">https://www.reddit.com/r/gifs/comments/2on8si/connecting_to_server_so_mesmerizing/cmow0sz</a></p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Prismata Processing maintained by <a href="https://github.com/SerenityCode">SerenityCode</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
-  </body>
-</html>
+            $('#numBall').on('input', function(){
+                num_ball = $('#numBall').val();
+            });
+            $('#xMod').on('input', function(){
+                x_modifier = $('#xMod').val();
+            });
+            $('#yMod').on('input', function(){
+                y_modifier = $('#yMod').val();
+            });
+    </script>
+</head>
+<body>
+    <p>A processing implementation of the prismata loading screen, modified from
+        https://www.reddit.com/r/gifs/comments/2on8si/connecting_to_server_so_mesmerizing/cmow0sz</p>
+    <p>Number of balls <input type="text" value="30" id="numBall"></p>
+    <p>X Modifier <input type="text" value="30" id="xMod"></p>
+    <p>Y Modifier <input type="text" value="80" id="yMod"></p>
+    <canvas id="loading"></canvas>
+</body>
