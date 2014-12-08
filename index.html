@@ -23,7 +23,7 @@
             }
 
             void getY(index, time) {
-                return (window.innerHeight /2) + y_modifier * (1 + Math.sin((time * (index/500 + 0.02)) % 2*Math.PI));
+                return (y_modifier / 2) + (ball_height / 2) + y_modifier * (1 + Math.sin((time * (index/500 + 0.02)) % 2*Math.PI));
             }
 
             void draw() {  // this is run repeatedly.
