@@ -9,7 +9,7 @@
             int y_modifier = 80;
             void setup() {
                 background(#02020C);
-                size(window.innerWidth, window.innerHeight);
+                size(x_modifier * num_ball + ball_height, (y_modifier + ball_height) * 2);
                 smooth();
                 frameRate(30);
                 strokeWeight(12);
@@ -23,7 +23,7 @@
             }
 
             void getY(index, time) {
-                return (y_modifier / 2) + (ball_height / 2) + y_modifier * (1 + Math.sin((time * (index/500 + 0.02)) % 2*Math.PI));
+                return (ball_height / 2) + y_modifier * (1 + Math.sin((time * (index/500 + 0.02)) % 2*Math.PI));
             }
 
             void draw() {  // this is run repeatedly.
@@ -34,14 +34,23 @@
                 animateBalls();
             }
 
+            void resizeCanvas(){
+                int newx = x_modifier * num_ball + ball_height;
+                int newy = (y_modifier + ball_height) * 2;
+                size(newx, newy);
+            }
+
             $('#numBall').on('input', function(){
-                num_ball = $('#numBall').val();
+                num_ball = parseInt($('#numBall').val());
+                resizeCanvas();
             });
             $('#xMod').on('input', function(){
-                x_modifier = $('#xMod').val();
+                x_modifier = parseInt($('#xMod').val());
+                resizeCanvas();
             });
             $('#yMod').on('input', function(){
-                y_modifier = $('#yMod').val();
+                y_modifier = parseInt($('#yMod').val());
+                resizeCanvas();
             });
     </script>
 </head>
