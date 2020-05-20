@@ -3,10 +3,14 @@
     <script src="javascripts/jquery-2.1.1.min.js"></script>
     <script type="application/processing" data-processing-target="loading">
             int num_ball = 30;
-            int timeStep = 0;
+            int time_step = 0;
             int ball_height = 40;
             int x_modifier = 30;
             int y_modifier = 80;
+            int[][] colour_store = new int[num_ball][3];
+            colour_frame = 10;
+            frame_rate = 30;
+
             void setup() {
                 background(#02020C);
                 size(x_modifier * num_ball + ball_height, (y_modifier + ball_height) * 2);
@@ -15,11 +19,18 @@
                 strokeWeight(12);
             }
 
-            void animateBalls() {
+            void animateBalls(colour_change) { 
                 for(int i = 0; i < num_ball; ++i){
-                    ellipse(ball_height + x_modifier*i, getY(i, timeStep), ball_height, ball_height)
+                    if(colour_change) {
+                        for(int j = 0; j < 3; ++j){
+                            colour_store[i][j] = random(255);
+                        }
+                    }
+                    fill(colour_store[i][0], colour_store[i][1], colour_store[i][2]);
+                    stroke(colour_store[i][0], colour_store[i][1], colour_store[i][2]);
+                    ellipse(ball_height + x_modifier*i, getY(i, time_step), ball_height, ball_height)
                 }
-                timeStep++
+                time_step++
             }
 
             void getY(index, time) {
@@ -27,29 +38,39 @@
             }
 
             void draw() {  // this is run repeatedly.
-                background(#02020C);
-                fill(#0E5482);
-                stroke(#0E5482);
-
-                animateBalls();
+                background(0, 0, 0);
+                if(time_step === 0 || time_step % colour_frame === 0){
+                    animateBalls(true);
+                } else {
+                    animateBalls(false);
+                }
             }
 
             void resizeCanvas(){
+                num_ball = parseInt($('#numBall').val());
+                x_modifier = parseInt($('#xMod').val());
+                y_modifier = parseInt($('#yMod').val());
+                colour_frame = parseInt($('#colourFrame').val());
+                frame_rate = parseInt($('#frameRate').val());
                 int newx = x_modifier * num_ball + ball_height;
                 int newy = (y_modifier + ball_height) * 2;
+                frameRate(frame_rate);
                 size(newx, newy);
             }
 
             $('#numBall').on('input', function(){
-                num_ball = parseInt($('#numBall').val());
                 resizeCanvas();
             });
             $('#xMod').on('input', function(){
-                x_modifier = parseInt($('#xMod').val());
                 resizeCanvas();
             });
             $('#yMod').on('input', function(){
-                y_modifier = parseInt($('#yMod').val());
+                resizeCanvas();
+            });
+            $('#colourFrame').on('input', function(){
+                resizeCanvas();
+            });
+            $('#frameRate').on('input', function(){
                 resizeCanvas();
             });
     </script>
@@ -61,5 +82,7 @@
     <p>Number of balls <input type="text" value="30" id="numBall"></p>
     <p>X Modifier <input type="text" value="30" id="xMod"></p>
     <p>Y Modifier <input type="text" value="80" id="yMod"></p>
+    <p>Framerate <input type="text" value="30" id="frameRate"></p>
+    <p>Frames between changing colour <input type="text" value="10" id="colourFrame"></p>
     <canvas id="loading"></canvas>
 </body>
