@@ -23,7 +23,7 @@
             }
 
             void getY(index, time) {
-                return (ball_height / 2) + y_modifier * (1 + Math.sin((time * (index/500 + 0.02)) % 2*Math.PI));
+                return ball_height + y_modifier * (1 + Math.sin((time * (index/500 + 0.02)) % 2*Math.PI));
             }
 
             void draw() {  // this is run repeatedly.
@@ -54,9 +54,10 @@
             });
     </script>
 </head>
-<body>
+<body style="background: black; color: white;">
     <p>A processing implementation of the prismata loading screen, modified from
         https://www.reddit.com/r/gifs/comments/2on8si/connecting_to_server_so_mesmerizing/cmow0sz</p>
+    <p>Canvas size is determined by the following values:</p>
     <p>Number of balls <input type="text" value="30" id="numBall"></p>
     <p>X Modifier <input type="text" value="30" id="xMod"></p>
     <p>Y Modifier <input type="text" value="80" id="yMod"></p>
