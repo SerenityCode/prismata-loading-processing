@@ -56,6 +56,8 @@
                 int newy = (y_modifier + ball_height) * 2;
                 frameRate(frame_rate);
                 size(newx, newy);
+                colour_store = new int[num_ball][3];
+                time_step = 0;
             }
 
             $('#numBall').on('input', function(){
